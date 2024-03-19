@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de commentaire</title>
+</head>
+<body>
+    <h1>Livre d'or</h1>
+
+    <!-- Formulaire de commentaire -->
+    <form id="commentForm">
+        <label for="nom">Nom:</label><br>
+        <input type="text" id="nom" name="nom" required><br>
+        <label for="commentaire">Commentaire:</label><br>
+        <textarea id="commentaire" name="commentaire" rows="4" cols="50" required></textarea><br>
+        <button type="submit">Envoyer</button>
+    </form>
+
+    <!-- Zone pour afficher les commentaires -->
+    <h2>Commentaires</h2>
+    <div id="zone-commentaires">
+        <!-- Les commentaires seront affichés ici -->
+    </div>
+
+    <script>
+        // Fonction pour envoyer le commentaire via AJAX
+        function envoyerCommentaire(event) {
+            event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
+
+            // Récupérer les données du formulaire
+            var formData = new FormData(document.getElementById('commentForm'));
+
+            // Effectuer une requête AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'traitement_commentaire.php', true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Mettre à jour la zone des commentaires avec la réponse du serveur
+                    document.getElementById('zone-commentaires').innerHTML = xhr.responseText;
+                } else {
+                    console.log('Une erreur s\'est produite.');
+                }
+            };
+            xhr.send(formData);
+        }
+
+        // Ajouter un écouteur d'événements au formulaire
+        document.getElementById('commentForm').addEventListener('submit', envoyerCommentaire);
+    </script>
+</body>
+</html>
